@@ -8,3 +8,4 @@ Route::get('/currencies', [Currencies::class, 'index']);
 Route::get('/currencies/last-exchange-rate', [Currencies::class, 'currenciesWithLastExchangeRate']);
 
 Route::get('/exchange-rates', [ExchangeRates::class, 'fetchRates']);
+Route::get('/exchange-rates/binance', [ExchangeRates::class, 'fetchBinanceRates']);

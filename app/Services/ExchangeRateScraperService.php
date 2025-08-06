@@ -28,4 +28,43 @@ class ExchangeRateScraperService
         $dolar = $crawler->filter('#dolar')->first()->text();
         return ['euro' => explode(' ', $euro)[1], 'dolar' => explode(' ', $dolar)[1]];
     }
+    public function getBinanceRates($amount = 10000): array
+    {
+        $url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
+        $response = $this->client->post($url, [
+            'verify' => false, // Deshabilita la verificación SSL
+            'headers' => [
+                'Accept' => '*/*',
+                'Content-Type' => 'application/json',
+                'Origin' => 'https://p2p.binance.com',
+                'User-Agent' => 'Mozilla/5.0',
+            ],
+            'json' => [
+                "fiat" => "VES",
+                "page" => 1,
+                "rows" => 10,
+                "tradeType" => "SELL",
+                "asset" => "USDT",
+                "countries" => [],
+                "proMerchantAds" => false,
+                "shieldMerchantAds" => false,
+                "filterType" => "all",
+                "periods" => [],
+                "additionalKycVerifyFilter" => 0,
+                "publisherType" => "merchant",
+                "payTypes" => [],
+                "classifies" => [
+                    "mass",
+                    "profession",
+                    "fiat_trade"
+                ],
+                "tradedWith" => false,
+                "followed" => false,
+                "transAmount" => $amount
+
+            ]
+        ]);
+        $json = $response->getBody()->getContents();
+        return json_decode($json, true);
+    }
 }

@@ -92,6 +92,47 @@
                     }
                 }
             }
+        },
+        "/api/exchange-rates/binance": {
+            "get": {
+                "tags": [
+                    "Exchange Rates"
+                ],
+                "summary": "Obtiene las tasas de cambio de Binance",
+                "operationId": "93c9f5a506e191787540c36e28365792",
+                "parameters": [
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Cantidad para la conversión",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10000
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
