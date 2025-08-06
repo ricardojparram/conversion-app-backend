@@ -1,0 +1,43 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cambio rápido app API",
+        "description": "Documentación de la API de Cambio rápido",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/hola": {
+            "get": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Retorna un mensaje de prueba",
+                "operationId": "80dbf1f5265058a5ee92424956249487",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string",
+                                            "example": "hola mundo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Currencies",
+            "description": "Currencies"
+        }
+    ]
+}
