@@ -4,6 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ * schema="Currency",
+ * type="object",
+ * title="Currency",
+ * required={"id", "name", "code", "source"},
+ * @OA\Property(property="id", type="integer", example=1),
+ * @OA\Property(property="name", type="string", example="BCV Dólar"),
+ * @OA\Property(property="code", type="string", example="USD"),
+ * @OA\Property(property="source", type="string", example="BCV"),
+ * @OA\Property(property="created_at", type="string", format="date-time"),
+ * @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class Currency extends Model
 {
     public $table = 'currencies';
@@ -24,9 +38,9 @@ class Currency extends Model
         return $this->exchangeRates()->whereDate('date', $date)->first();
     }
 
-    public function getLatestExchangeRate()
+    public function lastExchangeRate()
     {
-        return $this->exchangeRates()->latest()->first();
+        return $this->hasOne(ExchangeRate::class, 'currency_id')->latest('date');
     }
 
     public function scopeBySource($query, $source)

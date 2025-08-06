@@ -3,7 +3,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Currency;
 
 /**
  * @OA\Info(
@@ -17,21 +17,44 @@ class Currencies extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/hola",
-     *     summary="Retorna un mensaje de prueba",
+     *     path="/api/currencies",
+     *     summary="Retorna todas las monedas",
      *     tags={"Currencies"},
      *     @OA\Response(
      *         response=200,
      *         description="Respuesta exitosa",
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="mensaje", type="string", example="hola mundo")
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Currency"))
      *         )
      *     )
      * )
      */
-    public function holaMundo()
+    public function index()
     {
-        return response()->json(['mensaje' => 'hola mundo']);
+
+        return response()->json(['data' => Currency::all()]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/currencies/last-exchange-rate",
+     *     summary="Retorna todas las monedas con su última tasa de cambio",
+     *     tags={"Currencies"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Respuesta exitosa",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Currency"))
+     *         )
+     *     )
+     * )
+     */
+    public function currenciesWithLastExchangeRate()
+    {
+        $currencies = Currency::select(['id', 'name', 'code', 'source'])->with('lastExchangeRate:currency_id,rate,date')->get();
+
+        return response()->json(['data' => $currencies]);
     }
 }

@@ -2,12 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Currencies;
+use App\Http\Controllers\ExchangeRates;
 
-/**
- * @OA\Info(
- *     title="API de ejemplo",
- *     version="1.0",
- *     description="Documentación de la API de ejemplo con Swagger"
- * )
- */
-Route::get('/hola', [Currencies::class, 'holaMundo']);
+Route::get('/currencies', [Currencies::class, 'index']);
+Route::get('/currencies/last-exchange-rate', [Currencies::class, 'currenciesWithLastExchangeRate']);
+
+Route::get('/exchange-rates', [ExchangeRates::class, 'fetchRates']);
