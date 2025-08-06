@@ -22,13 +22,16 @@ class ScrapeExchangeRatesJob implements ShouldQueue
     public function handle(ExchangeRateScraperService $scraperService)
     {
         $rates = $scraperService->scrapeRates();
+        $rates = array_map(function ($rate) {
+            return round(floatval(str_replace(',', '.', $rate)), 2);
+        }, $rates);
 
         $currencyDolar = Currency::where('id', 1)->first();
         $currencyDolar->exchangeRates()->create([
             'rate' => $rates['dolar'],
             'date' => now(),
         ]);
-        $currencyEuro = Currency::where('id', 3)->first();
+        $currencyEuro = Currency::where('id', 2)->first();
         $currencyEuro->exchangeRates()->create([
             'rate' => $rates['euro'],
             'date' => now(),
