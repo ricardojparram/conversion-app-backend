@@ -6,13 +6,13 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/hola": {
+        "/api/currencies": {
             "get": {
                 "tags": [
                     "Currencies"
                 ],
-                "summary": "Retorna un mensaje de prueba",
-                "operationId": "80dbf1f5265058a5ee92424956249487",
+                "summary": "Retorna todas las monedas",
+                "operationId": "9fc7cd554b57763375e2c8de41da9692",
                 "responses": {
                     "200": {
                         "description": "Respuesta exitosa",
@@ -20,9 +20,69 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "mensaje": {
-                                            "type": "string",
-                                            "example": "hola mundo"
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Currency"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/currencies/last-exchange-rate": {
+            "get": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Retorna todas las monedas con su última tasa de cambio",
+                "operationId": "5c0c4945ffb5ab04635914c30424542c",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Currency"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/exchange-rates": {
+            "get": {
+                "tags": [
+                    "Exchange Rates"
+                ],
+                "summary": "Retorna todas las tasas de cambio",
+                "operationId": "9c67abd33059a424b4bd1dad9e61f0bd",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ExchangeRate"
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -34,10 +94,96 @@
             }
         }
     },
+    "components": {
+        "schemas": {
+            "Currency": {
+                "title": "Currency",
+                "required": [
+                    "id",
+                    "name",
+                    "code",
+                    "source"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "BCV Dólar"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "source": {
+                        "type": "string",
+                        "example": "BCV"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ExchangeRate": {
+                "title": "ExchangeRate",
+                "required": [
+                    "id",
+                    "currency_id",
+                    "rate",
+                    "date"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "currency_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "rate": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 4.1234
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-10-01T12:00:00Z"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "formatted_rate": {
+                        "type": "string",
+                        "example": "4.1234"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
         {
             "name": "Currencies",
             "description": "Currencies"
+        },
+        {
+            "name": "Exchange Rates",
+            "description": "Exchange Rates"
         }
     ]
 }
