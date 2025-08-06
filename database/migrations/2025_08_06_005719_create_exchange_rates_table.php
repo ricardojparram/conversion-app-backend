@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('exchange_rates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('currency_id'); // Relación con currencies
-            $table->decimal('rate', 12, 4); // Tasa de cambio
-            $table->datetime('date'); // Fecha y hora de la tasa
+            $table->unsignedBigInteger('currency_id');
+            $table->decimal('rate', 12, 2);
+            $table->datetime('date');
             $table->timestamps();
 
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
