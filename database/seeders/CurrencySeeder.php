@@ -23,16 +23,6 @@ class CurrencySeeder extends Seeder
             'date' => now(),
         ]);
 
-        $binanceUsdt = Currency::create([
-            'name' => 'Binance P2P',
-            'code' => 'USDT',
-            'source' => 'Binance',
-        ]);
-        $binanceUsdt->exchangeRates()->create([
-            'rate' => 175.20,
-            'date' => now(),
-        ]);
-
         $bcvEuro = Currency::create([
             'name' => 'BCV Euro',
             'code' => 'EUR',
@@ -40,6 +30,16 @@ class CurrencySeeder extends Seeder
         ]);
         $bcvEuro->exchangeRates()->create([
             'rate' => 148.20,
+            'date' => now(),
+        ]);
+
+        $binanceUsdt = Currency::create([
+            'name' => 'Binance P2P',
+            'code' => 'USDT',
+            'source' => 'Binance',
+        ]);
+        $binanceUsdt->exchangeRates()->create([
+            'rate' => 175.20,
             'date' => now(),
         ]);
     }
