@@ -65,6 +65,18 @@ class ExchangeRateScraperService
             ]
         ]);
         $json = $response->getBody()->getContents();
-        return json_decode($json, true);
+        $body = json_decode($json, true);
+
+        ["data" => $rates] = $body;
+        $filteredRates = array_filter($rates, function ($rate) {
+            return $rate['privilegeType'] !== 8;
+        });
+        $sum = array_reduce($filteredRates, function ($carry, $item) {
+            return $carry + (float)$item['adv']['price'];
+        });
+
+        $averageRate = count($filteredRates) > 0 ? $sum / count($filteredRates) : 0;
+
+        return ['amount' => $amount, 'average' => (float)number_format($averageRate, 2)];
     }
 }

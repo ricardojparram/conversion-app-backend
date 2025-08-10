@@ -11,11 +11,18 @@ Artisan::command('inspire', function () {
 
 Schedule::call(function () {
     Artisan::call('scrape:exchange-rates');
-})->dailyAt('8:00')->timezone('America/Caracas')->onFailure(function () {
-    // Handle failure, e.g., log the error or notify the admin
+})->dailyAt('8:00')->onFailure(function () {
     Log::error('Failed to scrape exchange rates.');
+});
+Schedule::call(function () {
+    Artisan::call('binance:exchange-rates');
+})->everyMinute()->onFailure(function () {
+    Log::error('Failed to scrape Binance exchange rates.');
 });
 
 Artisan::command('scrape:exchange-rates', function () {
     dispatch(new \App\Jobs\ScrapeExchangeRatesJob());
 });
+Artisan::command('binance:exchange-rates', function () {
+    dispatch(new \App\Jobs\BinanceExchangeRateJob());
+})->purpose('Dispatch Binance exchange rates job');

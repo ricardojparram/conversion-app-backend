@@ -54,16 +54,9 @@ class ExchangeRates extends Controller
     {
         $amount = $request->query('amount', 10000);
         $service = new \App\Services\ExchangeRateScraperService();
-        ["data" => $rates] = $service->getBinanceRates($amount);
-        $filteredRates = array_filter($rates, function ($rate) {
-            return $rate['privilegeType'] !== 8;
-        });
-        $sum = array_reduce($filteredRates, function ($carry, $item) {
-            return $carry + (float)$item['adv']['price'];
-        });
+        $rates = $service->getBinanceRates($amount);
 
-        $averageRate = count($filteredRates) > 0 ? $sum / count($filteredRates) : 0;
 
-        return response()->json(['amount' => $amount, 'average' => (float)number_format($averageRate, 2)]);
+        return response()->json($rates);
     }
 }
