@@ -27,14 +27,20 @@ class ScrapeExchangeRatesJob implements ShouldQueue
         }, $rates);
 
         $currencyDolar = Currency::where('id', 1)->first();
-        $currencyDolar->exchangeRates()->create([
-            'rate' => $rates['dolar'],
-            'date' => now(),
-        ]);
+        $actualRate = (float)$currencyDolar->exchangeRates()->latest()->first()->rate;
+        if ($actualRate !== $rates['dolar']) {
+            $currencyDolar->exchangeRates()->create([
+                'rate' => $rates['dolar'],
+                'date' => now(),
+            ]);
+        }
         $currencyEuro = Currency::where('id', 2)->first();
-        $currencyEuro->exchangeRates()->create([
-            'rate' => $rates['euro'],
-            'date' => now(),
-        ]);
+        $actualRateEuro = (float)$currencyEuro->exchangeRates()->latest()->first()->rate;
+        if ($actualRateEuro !== $rates['euro']) {
+            $currencyEuro->exchangeRates()->create([
+                'rate' => $rates['euro'],
+                'date' => now(),
+            ]);
+        }
     }
 }

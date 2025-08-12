@@ -11,12 +11,12 @@ Artisan::command('inspire', function () {
 
 Schedule::call(function () {
     Artisan::call('scrape:exchange-rates');
-})->dailyAt('8:00')->onFailure(function () {
+})->between('5:00', '9:00')->everyTenMinutes()->weekdays()->timezone('America/Caracas')->onFailure(function () {
     Log::error('Failed to scrape exchange rates.');
 });
 Schedule::call(function () {
     Artisan::call('binance:exchange-rates');
-})->everyMinute()->onFailure(function () {
+})->everyTenMinutes()->timezone('America/Caracas')->onFailure(function () {
     Log::error('Failed to scrape Binance exchange rates.');
 });
 

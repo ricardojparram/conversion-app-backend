@@ -26,9 +26,12 @@ class BinanceExchangeRateJob implements ShouldQueue
     public function handle(ExchangeRateScraperService $scraperService)
     {
         $rates = $scraperService->getBinanceRates();
-        Currency::where('id', 3)->first()->exchangeRates()->create([
-            'rate' => $rates['average'],
-            'date' => now(),
-        ]);
+        $binanceRate = Currency::where('id', 3)->first();
+        if ((float)$binanceRate->exchangeRates()->latest()->first()->rate !== (float)$rates['average']) {
+            $binanceRate->exchangeRates()->create([
+                'rate' => $rates['average'],
+                'date' => now(),
+            ]);
+        }
     }
 }
